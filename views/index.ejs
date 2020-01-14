@@ -1,7 +1,7 @@
 <html>
 	<head>
-		<link rel="shortcut icon" href="img/icon.ico"/>
-		<link rel="stylesheet" href="css/base.css"/>
+		<!--<link rel="shortcut icon" href="img/icon.ico"/>-->
+		<!--<link rel="stylesheet" href="css/base.css"/>-->
 		<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 		<title>File Manager</title>
 	</head>
@@ -11,6 +11,24 @@
 		<% } %>
 		<% if(locals.pwd){ %>
 			<div class='pwd'> <%=pwd%> </div>
+			<script type="text/javascript">
+				let getPwd = () => `<%=pwd%>`
+				let getPath = () => `<%-path[0]%>`
+			</script>
 		<% } %>
+
+		<script src="/socket.io/socket.io.js"></script>
+		<script>
+		  var socket = io();
+		  socket.on('files', data => {
+		  	console.log(data)
+		  	data.forEach(f => {
+		  		let link = $('<a>').attr('href', getPwd()+'/'+f).append(f)
+		  		$('body').append(link)
+		  	})
+		  })
+		</script>
+		<style type="text/css">a{display: block;}</style>
+
 	</body>
 </html>
