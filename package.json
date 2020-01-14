@@ -1,0 +1,32 @@
+{
+  "name": "node-file-manager2",
+  "version": "1.0.0",
+  "description": "A simple file manager using node.js, express and socket.io",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tubaleviao/node-file-manager2.git"
+  },
+  "keywords": [
+    "file",
+    "server",
+    "nodejs",
+    "express",
+    "socket"
+  ],
+  "author": "Tubaleviao",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Tubaleviao/node-file-manager2/issues"
+  },
+  "homepage": "https://github.com/Tubaleviao/node-file-manager2#readme",
+  "dependencies": {
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0",
+    "up.io": "^1.0.17"
+  }
+}
