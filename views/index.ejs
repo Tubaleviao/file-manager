@@ -10,8 +10,7 @@
 		<% if(locals.pwd){ %>
 			<div class='pwd'> <%=pwd%> </div>
 			<script type="text/javascript">
-				let getPwd = () => "<%=pwd%>".replace(/\\/g, '\\\\')
-				let getPath = () => '<%-path[0]%>'
+				let getPwd = () => "<%=pwd%>" // .replace(/\\/g,'\\\\')
 			</script>
 		<% } %>
 

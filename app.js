@@ -12,7 +12,7 @@ app.set('view engine', 'ejs')
 
 app.get('/*', (req, res) => {
 	console.log(req.params)
-	data = {pwd: __dirname, path: req.params}
+	data = {pwd: __dirname}// .replace(/\\/g,'\\\\')
 	res.render('index', data)
 })
 
