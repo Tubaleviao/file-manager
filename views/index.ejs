@@ -10,7 +10,7 @@
 		<% if(locals.pwd){ %>
 			<div class='pwd'> <%=pwd%> </div>
 			<script type="text/javascript">
-				let getPwd = () => "<%=pwd%>" // .replace(/\\/g,'\\\\')
+				let getPwd = () => JSON.parse('<%-pwd%>')
 			</script>
 		<% } %>
 
@@ -19,7 +19,6 @@
 
 		<style type="text/css">a{display: block;}</style>
 
-		
-
+		<div class="files"></div>
 	</body>
 </html>
