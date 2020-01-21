@@ -1,23 +1,27 @@
 $(function() {
 	const { fromEvent } = rxjs;
-	let {dir, base} = getPwd()
+	let dir = getDir()
 	var socket = io();
 
 	const clicks = fromEvent(document, 'click');
 	clicks.subscribe(x => {
+		x.preventDefault();
 		if(x.target.localName == "a"){
-			x.preventDefault();
-			socket.emit('path', x.target.getAttribute('href'))
-			console.log(x.target.getAttribute('href'))
+			if(x.target.className == "dir") socket.emit('path', x.target.getAttribute('href'))
+			// else fetch()
 		}
 	});
 
 	socket.on('files', data => {
 		$('.files').empty()
-		data.forEach(f => {
-			console.log(f)
-			let link = $('<a>').attr('href', f).append(f)
+		console.log(data.location)
+		let parent = $('<a>').attr('href', data.parent).addClass('dir').append('../')
+		$('.files').append(parent)
+		data.files.forEach(f => {
+			let link = $('<a>').attr('href', f.path).addClass(f.isFile ? 'file' : 'dir').append(f.name)
 			$('.files').append(link)
 		})
 	})
+
+	socket.emit('path', dir)
 })

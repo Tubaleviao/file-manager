@@ -1,16 +1,15 @@
 <html>
 	<head>
-		<!--<link rel="shortcut icon" href="img/icon.ico"/>-->
-		<!--<link rel="stylesheet" href="css/base.css"/>-->
 		<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 		<script src="script.js"></script>
 		<title>File Manager</title>
 	</head>
 	<body>
-		<% if(locals.pwd){ %>
-			<div class='pwd'> <%=pwd%> </div>
+		<% if(locals.dir){ %>
+			<div class='pwd'> <%=dir%> </div>
 			<script type="text/javascript">
-				let getPwd = () => JSON.parse('<%-pwd%>')
+				let getDir = () => JSON.parse('<%-dir%>')
+				let getParent = () => JSON.parse('<%-parent%>')
 			</script>
 		<% } %>
 
@@ -20,5 +19,6 @@
 		<style type="text/css">a{display: block;}</style>
 
 		<div class="files"></div>
+		<div class="contents"></div>
 	</body>
 </html>

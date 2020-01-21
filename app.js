@@ -11,39 +11,26 @@ app.use(upio.router);
 app.use(express.static('public'))
 app.set('view engine', 'ejs')
 
-const pwd = 
-
 app.get('/*', (req, res) => {
-	data = {pwd: JSON.stringify(path.parse(__dirname))}
+	data = {dir: JSON.stringify(__dirname), parent: JSON.stringify(path.parse(__dirname).dir)}
 	res.render('index', data)
 })
 
-io.on("connection", function(socket){
+io.on("connection", async socket => {
     var uploader = new upio()
     uploader.listen(socket)
     console.log("connected")
-    fs.readdir(__dirname, function (err, files) {
-	    if (err) console.log('Error: ' + err);
-	    const files2 = files.map(f => path.join(__dirname, f))
-	    socket.emit('files', files2)
-	});
-	socket.on('path', p => {
-		fs.lstat(p, (err, stats) => {
-			if(stats.isDirectory()){
-				async function check(p2) {
-					files = []
-					const dir = await fs.promises.opendir(p2);
-					for await (const dirent of dir) {
-						files.push(path.join(p2, dirent.name));
-					}
-					return files
-				}
-				check(p).then(f => socket.emit('files', f)).catch(console.error)
-			}else if(stats.isFile()){
-				// download file using fs.createWriteStream somehow
-			}
+	
+	socket.on('path', async location => {
+		const files = []
+		let parent = path.parse(location).dir
+		const dir = await fs.promises.opendir(location);
+		for await (const f of dir) files.push({
+			name: f.name,
+			path: path.join(location, f.name), 
+			isFile: f.isFile(),
 		})
-		
+		socket.emit('files', {files, location, parent})
 	})
 });
 
