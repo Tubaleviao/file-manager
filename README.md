@@ -1,4 +1,5 @@
 # node-file-manager2
+A simple file manager for your server
 
 ## Installation
 
