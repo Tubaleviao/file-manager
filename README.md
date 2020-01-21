@@ -1,6 +1,6 @@
 # node-file-manager2
 
-## Instalation
+## Installation
 
 ``` 
 npm install
