@@ -22,6 +22,5 @@ $(function() {
 			$('.files').append(link)
 		})
 	})
-
 	socket.emit('path', dir)
 })

@@ -8,8 +8,8 @@
 		<% if(locals.dir){ %>
 			<div class='pwd'> <%=dir%> </div>
 			<script type="text/javascript">
-				let getDir = () => JSON.parse('<%-dir%>')
-				let getParent = () => JSON.parse('<%-parent%>')
+				let getDir = () => <%-dir%>
+				let getParent = () => <%-parent%>
 			</script>
 		<% } %>
 
