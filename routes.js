@@ -9,7 +9,6 @@ route.get('/*', (req, res) => {
 	res.render('index', data)
 })
 route.post('/download', (req,res) => {
-    console.log(req.body.path)
     fs.createReadStream(req.body.path).pipe(res)
 })
 

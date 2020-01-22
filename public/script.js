@@ -4,33 +4,31 @@ $(function() {
 	var socket = io();
 
 	const clicks = fromEvent(document, 'click');
+
+	Array.prototype.last = function(){
+        return this[this.length - 1];
+    };
+
+	const donwload = (path, file) => {
+		const body = JSON.stringify({path})
+		const headers = {'Content-Type': 'application/json'}
+		const method = 'POST'
+		const fileStream = streamSaver.createWriteStream(file)
+		fetch('/download', {method, headers, body}).then(res => {
+			const readableStream = res.body
+			if (window.WritableStream && readableStream.pipeTo) {
+				return readableStream.pipeTo(fileStream)
+				.then(() => console.log('Downloaded '+file))
+			}else console.log("doesn't support that stuff")
+		})
+	}
+
 	clicks.subscribe(x => {
 		x.preventDefault();
 		if(x.target.localName == "a"){
-			if(x.target.className == "dir") socket.emit('path', x.target.getAttribute('href'))
-			else {
-				const body = JSON.stringify({path: x.target.getAttribute('href')})
-				const headers = {'Content-Type': 'application/json'}
-				const method = 'POST'
-				fetch('/download', {method, headers, body}).then(res => {
-					function unencrypt(){
-						return new Uint8Array()
-					}
-					const fileStream = streamSaver.createWriteStream('filename.txt')
-					const writer = fileStream.getWriter()
-
-					const reader = res.body.getReader()
-					const pump = () => reader.read()
-						.then(({ value, done }) => {
-							let chunk = unencrypt(value)
-							writer.write(chunk) // returns a promi
-							return writer.ready.then(pump)
-						})
-					pump().then(() =>
-						console.log('Closed the stream, Done writing')
-					)
-				})
-			}
+			const file = x.target.getAttribute('href')
+			if(x.target.className == "dir") socket.emit('path', file)
+			else donwload(file, file.split('\\').last())
 		}
 	});
 
@@ -38,7 +36,6 @@ $(function() {
 
 	socket.on('files', data => {
 		$('.files').empty()
-		console.log(data.location)
 		let parent = $('<a>').attr('href', data.parent).addClass('dir').append('../')
 		$('.files').append(parent)
 		data.files.forEach(f => {
