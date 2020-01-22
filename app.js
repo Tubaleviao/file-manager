@@ -1,37 +1,21 @@
 const express = require('express')
-const app = express()
+const http = require('http')
 const upio = require('up.io')
-const http = require('http').createServer(app)
-const io = require('socket.io')(http)
-const fs = require('fs')
-const path = require('path')
-const port = 3000
+const socketIo = require('socket.io')
 
-app.use(upio.router);
+const router = require('./routes')
+const ioCode = require('./io')
+
+const port = 3000
+const app = express()
+const server = http.createServer(app)
+const io = socketIo(server)
+
+app.use(upio.router)
+app.use(express.json())
 app.use(express.static('public'))
 app.set('view engine', 'ejs')
+app.use(router)
+io.on("connection", ioCode.con)
 
-app.get('/*', (req, res) => {
-	data = {dir: JSON.stringify(__dirname), parent: JSON.stringify(path.parse(__dirname).dir)}
-	res.render('index', data)
-})
-
-io.on("connection", async socket => {
-    var uploader = new upio()
-    uploader.listen(socket)
-    console.log("connected")
-	
-	socket.on('path', async location => {
-		const files = []
-		let parent = path.parse(location).dir
-		const dir = await fs.promises.opendir(location);
-		for await (const f of dir) files.push({
-			name: f.name,
-			path: path.join(location, f.name), 
-			isFile: f.isFile(),
-		})
-		socket.emit('files', {files, location, parent})
-	})
-});
-
-http.listen(port, () => console.log(`Listening on port ${port}!`))
+server.listen(port, () => console.log(`Listening on port ${port}!`))

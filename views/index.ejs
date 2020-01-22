@@ -1,12 +1,13 @@
 <html>
 	<head>
 		<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/streamsaver@2.0.3/StreamSaver.min.js"></script>
 		<script src="script.js"></script>
 		<title>File Manager</title>
 	</head>
 	<body>
+		<div class='root'></div>
 		<% if(locals.dir){ %>
-			<div class='pwd'> <%=dir%> </div>
 			<script type="text/javascript">
 				let getDir = () => <%-dir%>
 				let getParent = () => <%-parent%>

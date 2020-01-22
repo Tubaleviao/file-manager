@@ -8,9 +8,33 @@ $(function() {
 		x.preventDefault();
 		if(x.target.localName == "a"){
 			if(x.target.className == "dir") socket.emit('path', x.target.getAttribute('href'))
-			// else fetch()
+			else {
+				const body = JSON.stringify({path: x.target.getAttribute('href')})
+				const headers = {'Content-Type': 'application/json'}
+				const method = 'POST'
+				fetch('/download', {method, headers, body}).then(res => {
+					function unencrypt(){
+						return new Uint8Array()
+					}
+					const fileStream = streamSaver.createWriteStream('filename.txt')
+					const writer = fileStream.getWriter()
+
+					const reader = res.body.getReader()
+					const pump = () => reader.read()
+						.then(({ value, done }) => {
+							let chunk = unencrypt(value)
+							writer.write(chunk) // returns a promi
+							return writer.ready.then(pump)
+						})
+					pump().then(() =>
+						console.log('Closed the stream, Done writing')
+					)
+				})
+			}
 		}
 	});
+
+	$('.root').append($('<a>').attr('href', dir).addClass('dir').append(dir))
 
 	socket.on('files', data => {
 		$('.files').empty()
