@@ -2,6 +2,7 @@
 	<head>
 		<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/streamsaver@2.0.3/StreamSaver.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="style.css">
 		<script src="script.js"></script>
 		<title>File Manager</title>
 	</head>
@@ -13,13 +14,8 @@
 				let getParent = () => <%-parent%>
 			</script>
 		<% } %>
-
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="https://unpkg.com/rxjs/bundles/rxjs.umd.min.js"></script>
-
-		<style type="text/css">a{display: block;}</style>
-
 		<div class="files"></div>
-		<div class="contents"></div>
 	</body>
 </html>

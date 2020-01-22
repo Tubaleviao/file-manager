@@ -2,7 +2,6 @@ $(function() {
 	const { fromEvent } = rxjs;
 	let dir = getDir()
 	var socket = io();
-
 	const clicks = fromEvent(document, 'click');
 
 	Array.prototype.last = function(){
@@ -35,13 +34,14 @@ $(function() {
 	$('.root').append($('<a>').attr('href', dir).addClass('dir').append(dir))
 
 	socket.on('files', data => {
-		$('.files').empty()
 		let parent = $('<a>').attr('href', data.parent).addClass('dir').append('../')
-		$('.files').append(parent)
+		$('.files').empty()
 		data.files.forEach(f => {
-			let link = $('<a>').attr('href', f.path).addClass(f.isFile ? 'file' : 'dir').append(f.name)
-			$('.files').append(link)
+			let link = $('<a>').attr('href', f.path).append(f.name)
+			if(f.isFile) $('.files').append(link.addClass('file')) 
+			else $('.files').prepend(link.addClass('dir')) 
 		})
+		$('.files').prepend(parent)
 	})
 	socket.emit('path', dir)
 })
