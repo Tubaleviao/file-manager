@@ -1,6 +1,5 @@
 # file-manager
-A simple file manager for your server
-
+A simple file manager for your server.
 ## Installation
 
 ``` 
