@@ -10,12 +10,13 @@ module.exports.con = async socket => {
 	socket.on('path', async location => {
 		const files = []
 		let parent = path.parse(location).dir
-		const dir = await fs.promises.opendir(location);
-		for await (const f of dir) files.push({
-			name: f.name,
-			path: path.join(location, f.name), 
-			isFile: f.isFile(),
+		fs.readdir(location, {withFileTypes: true}, (err, dir) => {
+			for (const f of dir) files.push({
+				name: f.name,
+				path: path.join(location, f.name), 
+				isFile: f.isFile(),
+			})
+			socket.emit('files', {files, location, parent})
 		})
-		socket.emit('files', {files, location, parent})
 	})
 }
