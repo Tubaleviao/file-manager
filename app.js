@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const http = require('http')
 const upio = require('up.io')
@@ -6,7 +7,7 @@ const socketIo = require('socket.io')
 const router = require('./routes')
 const ioCode = require('./io')
 
-const port = 3000
+const port = process.env.PORT
 const app = express()
 const server = http.createServer(app)
 const io = socketIo(server)
