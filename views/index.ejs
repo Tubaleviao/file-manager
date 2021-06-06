@@ -15,27 +15,12 @@
 				let getParent = () => <%-parent%>
 			</script>
 		<% } %>
+		<script src="/upio/client.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
 		<div class="files"></div>
 
-		<div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">Heeere</div>
-		<script>
-			function allowDrop(ev) {
-			ev.preventDefault();
-			console.log("ae")
-			}
-
-			function drag(ev) {
-				console.log("ao")
-			ev.dataTransfer.setData("text", ev.target.id);
-			}
-
-			function drop(ev) {
-				console.log("ai")
-			ev.preventDefault();
-			var data = ev.dataTransfer.getData("text");
-			console.log(ev.dataTransfer)
-			}
-		</script>
+		<div class="box">
+			<input id="inp" type="file" onchange="handle(this)" multiple />
+		</div>
 	</body>
 </html>

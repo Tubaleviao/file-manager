@@ -1,7 +1,19 @@
+function handle(input) {
+	if (input.files && input.files[0]) {
+		const file = input.files[0]
+		//$('#inp').attr("value", file)
+		console.log("worked "+file.name)
+	} else {
+		console.log("remove upload")
+	}
+}
+
 $(function() {
 	const { fromEvent } = Rx.Observable;
 	let dir = getDir()
 	var socket = io();
+	var uploader = new UpIoFileUpload(socket)
+	uploader.listenInput(document.getElementById("inp"));
 	const clicks = fromEvent(document, 'click');
 
 	Array.prototype.last = function(){
@@ -23,8 +35,9 @@ $(function() {
 	}
 
 	clicks.subscribe(x => {
-		x.preventDefault();
+		
 		if(x.target.localName == "a"){
+			x.preventDefault()
 			const file = x.target.getAttribute('href')
 			if(x.target.className == "dir") socket.emit('path', file)
 			else donwload(file, file.split('\\').last())
@@ -42,6 +55,12 @@ $(function() {
 			else $('.files').prepend(link.addClass('dir')) 
 		})
 		$('.files').prepend(parent)
+	})
+	socket.on("up_completed", function(data){
+		console.log("Completed!"); 
+	});
+	socket.on('up_started', function(data){
+		console.log("Music id which started: "+data.id);
 	})
 	socket.emit('path', dir)
 })
