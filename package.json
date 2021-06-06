@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/Tubaleviao/node-file-manager2#readme",
   "dependencies": {
-    "dotenv": "^8.2.0",
+    "dotenv": "^8.6.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "socket.io": "^2.4.1",
