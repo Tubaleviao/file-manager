@@ -1,5 +1,5 @@
 $(function() {
-	const { fromEvent } = rxjs;
+	const { fromEvent } = Rx.Observable;
 	let dir = getDir()
 	var socket = io();
 	const clicks = fromEvent(document, 'click');

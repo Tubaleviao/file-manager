@@ -2,6 +2,7 @@
 	<head>
 		<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/streamsaver@2.0.3/StreamSaver.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/2.3.22/rx.all.js"></script>
 		<link rel="stylesheet" type="text/css" href="style.css">
 		<script src="script.js"></script>
 		<title>File Manager</title>
@@ -15,7 +16,6 @@
 			</script>
 		<% } %>
 		<script src="/socket.io/socket.io.js"></script>
-		<script src="https://unpkg.com/rxjs/bundles/rxjs.umd.min.js"></script>
 		<div class="files"></div>
 
 		<div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">Heeere</div>
