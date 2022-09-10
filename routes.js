@@ -1,11 +1,12 @@
 const express = require('express')
-const path = require('path')
+const {join} = require('path')
 const fs = require('fs')
 
 const route = express.Router()
+const init = join(__dirname, ...(process.env.INITIAL_FOLDER || "initial").split("/"))
 
 route.get('/*', (req, res) => {
-	data = {dir: JSON.stringify(__dirname), parent: JSON.stringify(path.parse(__dirname).dir)}
+	data = {dir: JSON.stringify(init), parent: JSON.stringify(join('..',init))}
 	res.render('index', data)
 })
 route.post('/download', (req,res) => {
