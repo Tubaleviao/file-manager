@@ -3,6 +3,7 @@ function handle(input) {
 		const file = input.files[0]
 		//$('#inp').attr("value", file)
 		console.log("worked "+file.name)
+		document.getElementsByClassName('progress')[0].replaceChildren()
 	} else {
 		console.log("remove upload")
 	}
@@ -13,7 +14,8 @@ $(function() {
 	let dir = getDir()
 	var socket = io();
 	var uploader = new UpIoFileUpload(socket)
-	uploader.listenInput(document.getElementById("inp"));
+	uploader.listenInput(document.getElementById("inp"))
+	var progressText = document.getElementsByClassName('progress')[0]
 	const clicks = fromEvent(document, 'click');
 
 	Array.prototype.last = function(){
@@ -46,7 +48,7 @@ $(function() {
 
 	$('.root').append($('<a>').attr('href', dir).addClass('dir').append(dir))
 
-	socket.on('files', data => {
+	socket.on('files', data => {		
 		let parent = $('<a>').attr('href', data.parent).addClass('dir').append('../')
 		$('.files').empty()
 		data.files.forEach(f => {
@@ -57,10 +59,18 @@ $(function() {
 		$('.files').prepend(parent)
 	})
 	socket.on("up_completed", function(data){
-		console.log("Completed!"); 
+		var progressTextUpdate = document.getElementsByClassName(`UploadId`+data.file_id)[0]
+		progressTextUpdate.innerText = `${data.file_name}:100% - Completed`
 	});
 	socket.on('up_started', function(data){
 		console.log("Music id which started: "+data.id);
+		var newProgressText = document.createElement('div')
+		newProgressText.className = `UploadId${data.id}`
+		progressText.appendChild(newProgressText)
+	})
+	socket.on('up_progress', function(data){
+		var progressTextUpdate = document.getElementsByClassName(`UploadId`+data.file_id)[0]
+		progressTextUpdate.innerText = `${data.file_name}:${(data.percent * 100)}%`
 	})
 	socket.emit('path', dir)
 })
