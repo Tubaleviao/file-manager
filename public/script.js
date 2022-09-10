@@ -14,7 +14,7 @@ $(function() {
 	let dir = getDir()
 	var socket = io();
 	var uploader = new UpIoFileUpload(socket)
-	uploader.chunkSize = 1024 * 1000;
+	uploader.chunkSize = 1024 * 200;
 	uploader.listenInput(document.getElementById("inp"))
 	var progressText = document.getElementsByClassName('progress')[0]
 	const clicks = fromEvent(document, 'click');
