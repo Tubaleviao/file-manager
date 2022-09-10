@@ -8,6 +8,7 @@
 		<title>File Manager</title>
 	</head>
 	<body>
+		<input id="inpwholepage" type="file" onchange="handle(this)" multiple />
 		<div class='root'></div>
 		<% if(locals.dir){ %>
 			<script type="text/javascript">

@@ -16,8 +16,35 @@ $(function() {
 	var uploader = new UpIoFileUpload(socket)
 	uploader.chunkSize = 1024 * 200;
 	uploader.listenInput(document.getElementById("inp"))
+	uploader.listenInput(document.getElementById("inpwholepage"))
 	var progressText = document.getElementsByClassName('progress')[0]
 	const clicks = fromEvent(document, 'click');
+
+	$(document).ready(function() {
+		document.getElementById("inpwholepage").style.display = "none";
+		$("#inpwholepage").click(function(e) {
+			e.preventDefault();
+		})
+	});
+
+	$(document).bind({
+		dragenter: function(e) {
+			e.preventDefault();
+			addEventListener('dragenter', () => document.getElementById("inpwholepage").style.display = "block")
+		},
+
+		dragleave: function(e) {
+			document.getElementById('inpwholepage').addEventListener('dragleave', unchangeDragDisplay)
+		},
+		
+		drop: function() {
+			addEventListener('drop', unchangeDragDisplay)
+		}
+	})
+	
+	function unchangeDragDisplay(e) {
+		document.getElementById("inpwholepage").style.display = "none";
+	}
 
 	Array.prototype.last = function(){
         return this[this.length - 1];
