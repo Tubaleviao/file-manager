@@ -1,7 +1,6 @@
 function handle(input) {
 	if (input.files && input.files[0]) {
 		const file = input.files[0]
-		//$('#inp').attr("value", file)
 		console.log("worked "+file.name)
 		document.getElementsByClassName('progress')[0].replaceChildren()
 	} else {
@@ -20,23 +19,16 @@ $(function() {
 	var progressText = document.getElementsByClassName('progress')[0]
 	const clicks = fromEvent(document, 'click');
 
-	$(document).ready(function() {
-		document.getElementById("inpwholepage").style.display = "none";
-		$("#inpwholepage").click(function(e) {
-			e.preventDefault();
-		})
-	});
+	document.getElementById("inpwholepage").style.display = "none";
 
 	$(document).bind({
 		dragenter: function(e) {
 			e.preventDefault();
 			addEventListener('dragenter', () => document.getElementById("inpwholepage").style.display = "block")
 		},
-
 		dragleave: function(e) {
 			document.getElementById('inpwholepage').addEventListener('dragleave', unchangeDragDisplay)
 		},
-		
 		drop: function() {
 			addEventListener('drop', unchangeDragDisplay)
 		}
@@ -65,7 +57,6 @@ $(function() {
 	}
 
 	clicks.subscribe(x => {
-		
 		if(x.target.localName == "a"){
 			x.preventDefault()
 			const file = x.target.getAttribute('href')
@@ -73,8 +64,6 @@ $(function() {
 			else donwload(file, file.split('\\').last())
 		}
 	});
-
-	$('.root').append($('<a>').attr('href', dir).addClass('dir').append(dir))
 
 	socket.on('files', data => {		
 		let parent = $('<a>').attr('href', data.parent).addClass('dir').append('../')
@@ -85,13 +74,17 @@ $(function() {
 			else $('.files').prepend(link.addClass('dir')) 
 		})
 		$('.files').prepend(parent)
+		dir = data.location
+		$('.root').empty()
+		$('.root').append($('<a>').attr('href', dir).addClass('dir').append(dir))
 	})
 	socket.on("up_completed", function(data){
 		var progressTextUpdate = document.getElementsByClassName(`UploadId`+data.file_id)[0]
 		progressTextUpdate.innerText = `${data.file_name}:100% - Completed`
+		socket.emit('path', dir)
 	});
 	socket.on('up_started', function(data){
-		console.log("Music id which started: "+data.id);
+		console.log("File id which started: "+data.id);
 		var newProgressText = document.createElement('div')
 		newProgressText.className = `UploadId${data.id}`
 		progressText.appendChild(newProgressText)
