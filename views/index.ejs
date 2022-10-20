@@ -8,6 +8,9 @@
 		<title>File Manager</title>
 	</head>
 	<body>
+		<form action="/logout?_method=DELETE" method="POST">
+			<button type="submit">Log Out</button>
+		  </form>
 		<input id="inpwholepage" type="file" onchange="handle(this)" multiple />
 		<div class='root'></div>
 		<% if(locals.dir){ %>
