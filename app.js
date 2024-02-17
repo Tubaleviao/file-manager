@@ -3,7 +3,6 @@ const express = require('express')
 const http = require('http')
 const upio = require('up.io')
 const socketIo = require('socket.io')
-var ip = require("ip");
 
 const router = require('./routes')
 const ioCode = require('./io')
@@ -21,4 +20,4 @@ app.set('view engine', 'ejs')
 app.use(router)
 io.on("connection", ioCode.con(init))
 
-server.listen(port, () => console.log(`Listening ${ip.address()}:${port}!`))
+server.listen(port, () => console.log(`Listening on port ${port}!`))
